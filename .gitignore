@@ -1,6 +1,11 @@
+# Chalice
+.chalice/deployed/
 .chalice/deployments/
 .chalice/venv/
+.chalice/config.json
 
+# VSCode
+.vscode
 
 ## https://raw.githubusercontent.com/github/gitignore/master/Python.gitignore
 
