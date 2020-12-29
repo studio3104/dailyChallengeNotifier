@@ -1,13 +1,17 @@
 from typing import Any, Dict
 
 from datetime import datetime
+import logging
 import os
 import pytz
 import requests
+import textwrap
 
 from chalice import Chalice, Cron
 
 app = Chalice(app_name='dailyChallengeNotifier')
+app.log.setLevel(logging.INFO)
+
 WEBHOOK_URL = os.environ['WEBHOOK_URL']
 
 
@@ -18,11 +22,19 @@ def get_pst_now() -> datetime:
 
 def generate_message() -> str:
     pst_today = get_pst_now().strftime('%Y/%m/%d')
-    return f'Time to take on the daily problem for {pst_today}!!'
+    return textwrap.dedent(
+        f"""
+        Time to take on the daily problem for {pst_today}!!
+        https://leetcode.com/explore/challenge/
+        """
+    ).strip()
 
 
 def post_message(message: str) -> None:
-    response = requests.post(WEBHOOK_URL, json={'text': message})
+    post_body = {
+        'text': message,
+    }
+    response = requests.post(WEBHOOK_URL, json=post_body)
     app.log.info(response)
 
 
