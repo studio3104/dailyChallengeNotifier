@@ -38,7 +38,7 @@ def post_message(message: str) -> None:
     app.log.info(response)
 
 
-# PST 00:00 == UTC 08:00
-@app.schedule(Cron(0, 8, '*', '*', '?', '*'))
+# UTC+0000, PDT-0700, PST-0800
+@app.schedule(Cron(0, 7, '*', '*', '?', '*'))
 def kick_job(event: Dict[str, Any]) -> None:
     post_message(generate_message())
